@@ -1,4 +1,5 @@
 *node_modules
 *.log
+passwd
 outsider-quiz.js
 
