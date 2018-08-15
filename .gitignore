@@ -1,6 +1,4 @@
 *node_modules
-*.rc
 *.log
-*.json
 outsider-quiz.js
 

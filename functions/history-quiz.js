@@ -23,7 +23,7 @@ function readFile(path) {
   data.forEach(element => {
     let question = {
       sentence: element[0],
-      answers: element.slice(1, element.length),
+      answers: element.slice(1, element.length - 1),
     }
     questions.push(question);
   });
