@@ -1,20 +1,29 @@
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
+
+const FILE_PASSWD = path.join(__dirname, 'passwd');
+
 // 以下をコメントアウトするとデバッグ出力が有効になります
 process.env.DEBUG = 'actions-on-google:*';
 
 const functions = require('firebase-functions');
 const { dialogflow } = require('actions-on-google');
 
-const PASSWORD = "*****";
+let verification = {};
+fs.readFile(FILE_PASSWD, function (err, data) {
+  verification = {
+    verification: {
+      Authorization: 'Bearer ' + data,
+    },
+  }
+})
 
-const app = dialogflow({
-  verification: {
-    Authorization: 'Bearer ' + PASSWORD,
-  },
-});
+const app = dialogflow(verification);
 
 const CONTEXT_QUIZ = 'quiz';
+const CONTEXT_NUMBER_OF_QUESTIONS = 'number_of_questions';
 
 // Intentの設定
 app.intent('Default Welcome Intent', quiz);
@@ -32,13 +41,22 @@ function quiz(conv, params, input) {
   const quiz = require('./history-quiz').create();
 
   // コンテキストにデータを保存
-  conv.contexts.set(CONTEXT_QUIZ, 1, {
-    quiz: quiz,
-  });
+  conv.contexts.set(CONTEXT_QUIZ, 1, { quiz: quiz, });
+  
+  /*
+  let numberOfQuestions = conv.contexts.get(CONTEXT_NUMBER_OF_QUESTIONS);
+  if (numberOfQuestions) {
+    numberOfQuestions -= 1;
+  } else {
+    numberOfQuestions = 10;
+  }
+  conv.contexts.set(CONTEXT_NUMBER_OF_QUESTIONS, 10, {number: numberOfQuestions, });
+  conv.ask('<speak>第' + numberOfQuestions + '問<break time="100ms"/>');
+  */
 
   conv.ask('<speak>まるまる<break time="500ms"/>にあてはまる言葉を答えてください。' +
-           '<break time="500ms"/>' +
-           quiz.question + '</speak>');
+    '<break time="500ms"/>' +
+    quiz.question + '</speak>');
 }
 
 function quizAnswer(conv, params, input) {
@@ -74,7 +92,7 @@ function getQuizFromContext(conv) {
 function quizRepeat(conv, params, input) {
   const quiz = getQuizFromContext(conv);
 
-  conv.ask('<speak>括弧にあてはまる言葉を答えてください。' +
+  conv.ask('<speak>まるまる<break time="500ms"/>にあてはまる言葉を答えてください。' +
            '<break time="500ms"/>' +
            quiz.question + '</speak>');
 }
