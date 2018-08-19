@@ -3,26 +3,15 @@
 const verification = require('./verification').getVerificationSync();
 const app = require('actions-on-google').dialogflow(verification);
 
-// Intentの設定
-app.intent('Default Welcome Intent', quiz);
-app.intent('Quiz', quiz);
-//app.intent('QuizAnswer - yes', quiz);
-app.intent('QuizAnswer', quizAnswer);
-app.intent('Quiz - repeat', quizRepeat);
-app.intent('Quiz - noinput', quizRepeat);
-app.intent('QuizAnswer - noinput', conv => {
-    conv.ask('続けますか？');
-});
-
 const CONTEXT_QUIZ = 'quiz';
 const CONTEXT_QUIZ_NUMBER = 'quiz_number';
 
 // クイズを出題する
-function quiz(conv, params, input) {
+const quiz = conv => {
     doQuiz(conv);
 }
 
-function quizAnswer(conv, params, input) {
+const quizAnswer = (conv, params) => {
     // ItemNameパラメータを受け取る
     const itemName = params.ItemName;
 
@@ -46,6 +35,25 @@ function quizAnswer(conv, params, input) {
     doQuiz(conv);
 }
 
+const quizRepeat = conv => {
+    const quiz = getQuizFromContext(conv);
+
+    conv.ask('<speak>まるまる<break time="500ms"/>にあてはまる言葉を答えてください。<break time="500ms"/>'
+        + quiz.question
+        + '</speak>');
+}
+
+const quizContinue = conv => conv.ask('続けますか？');
+
+// Intentの設定
+app.intent('Default Welcome Intent', quiz);
+app.intent('Quiz', quiz);
+//app.intent('QuizAnswer - yes', quiz);
+app.intent('QuizAnswer', quizAnswer);
+app.intent('Quiz - repeat', quizRepeat);
+app.intent('Quiz - noinput', quizRepeat);
+app.intent('QuizAnswer - noinput', quizContinue);
+
 function doQuiz(conv) {
     const quiz = require('./history-quiz').create();
 
@@ -53,11 +61,10 @@ function doQuiz(conv) {
     conv.contexts.set(CONTEXT_QUIZ, 1, { quiz: quiz, });
 
     let quizNumber = getQuizNumber(conv);
-    conv.ask('<speak>第' + quizNumber + '問<break time="100ms"/>');
-
-    conv.ask('<speak>まるまる<break time="500ms"/>にあてはまる言葉を答えてください。' +
-        '<break time="500ms"/>' +
-        quiz.question + '</speak>');
+    conv.ask('<speak>第' + quizNumber + '問<break time="100ms" />'
+        + 'まるまる <break time="500ms" /> にあてはまる言葉を答えてください。<break time="500ms" />'
+        + quiz.question
+        + '</speak>');
 }
 
 // コンテキストに保存されたクイズデータを取得
@@ -75,15 +82,6 @@ function getQuizNumber(conv) {
     conv.contexts.set(CONTEXT_QUIZ_NUMBER, 10, { number: ++quizNumber, });
 
     return quizNumber ? quizNumber : 1;
-}
-
-// 問題文を繰り返す
-function quizRepeat(conv, params, input) {
-    const quiz = getQuizFromContext(conv);
-
-    conv.ask('<speak>まるまる<break time="500ms"/>にあてはまる言葉を答えてください。' +
-        '<break time="500ms"/>' +
-        quiz.question + '</speak>');
 }
 
 module.exports = app;
