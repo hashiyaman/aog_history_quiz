@@ -30,16 +30,16 @@ function readFile(path) {
     }
     questions.push(question);
   });
-  
+
   return questions;
 }
-  
+
 function getRandomItem(array) {
   let randomNumber = Math.floor(Math.random() * array.length);
   return array[randomNumber];
 }
-  
-exports.create = function () {
+
+const create = () => {
   if (loadedQuestions.length == 0) {
     loadedQuestions = readFile(FILE_QUESTIONS);
   }
@@ -50,9 +50,11 @@ exports.create = function () {
   // 問題文の回答部分をプレースホルダで置き換える
   const answer = getRandomItem(question.answers);
   const replacedSentence = question.sentence.replace(answer, PLACEHOLDER);
-  
+
   return {
     question: replacedSentence,
     answer: answer,
   };
 };
+
+module.exports = { create };
