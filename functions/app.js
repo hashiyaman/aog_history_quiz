@@ -6,6 +6,8 @@ const app = require('actions-on-google').dialogflow(verification);
 const CONTEXT_QUIZ = 'quiz';
 const CONTEXT_QUIZ_NUMBER = 'quiz_number';
 
+let quizNum = 0;
+
 // クイズを出題する
 const quiz = conv => {
     doQuiz(conv);
@@ -56,12 +58,13 @@ app.intent('QuizAnswer - noinput', quizContinue);
 
 function doQuiz(conv) {
     const quiz = require('./history-quiz').create();
+    quizNum++;
 
     // コンテキストにデータを保存
     conv.contexts.set(CONTEXT_QUIZ, 1, { quiz: quiz, });
 
     let quizNumber = getQuizNumber(conv);
-    conv.ask('<speak>第' + quizNumber + '問<break time="100ms" />'
+    conv.ask('<speak>第' + quizNum + '問<break time="100ms" />'
         + 'まるまる <break time="500ms" /> にあてはまる言葉を答えてください。<break time="500ms" />'
         + quiz.question
         + '</speak>');
