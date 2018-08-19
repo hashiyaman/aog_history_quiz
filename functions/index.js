@@ -28,7 +28,7 @@ const CONTEXT_CURRENT_QUIZ_NUMBER  = 'current_quiz_number';
 // Intentの設定
 app.intent('Default Welcome Intent', quiz);
 app.intent('Quiz', quiz);
-app.intent('QuizAnswer - yes', quiz);
+//app.intent('QuizAnswer - yes', quiz);
 app.intent('QuizAnswer', quizAnswer);
 app.intent('Quiz - repeat', quizRepeat);
 app.intent('Quiz - noinput', quizRepeat);
@@ -78,14 +78,13 @@ function quizAnswer(conv, params, input) {
   }
 
   const correctAnswer = quiz.answer;
-
   let reply = '<speak>';
   if (correctAnswer === itemName) {
     reply += '<emphasis level="strong">正解です！</emphasis>';
   } else {
     reply += '違います。正解は「' + correctAnswer + '」でした。';
   }
-  reply += '<break time="500ms"/>もう一回、やりませんか？</speak>';
+
   conv.ask(reply);
 }
 

@@ -7,9 +7,12 @@ const path = require('path');
 const FILE_QUESTIONS = path.join(__dirname, 'questions.csv');
 const PLACEHOLDER = '<break time="300ms"/>まるまる<break time="300ms"/>'
 
-function readFile(path) {
-  let questions = [];
+const loadedQuestions = [];
 
+function readFile(path) {
+  console.log(path + "をロードします。");
+
+  let questions = [];
   let csvOption = {
     quote: '"',
     ltrim: true,
@@ -37,11 +40,12 @@ function getRandomItem(array) {
 }
   
 exports.create = function () {
-  // 問題・回答を読み込む
-  const questions = readFile(FILE_QUESTIONS);
+  if (loadedQuestions.length == 0) {
+    loadedQuestions = readFile(FILE_QUESTIONS);
+  }
 
   // ランダムに問題・回答を選出する
-  let question = getRandomItem(questions);
+  let question = getRandomItem(loadedQuestions);
 
   // 問題文の回答部分をプレースホルダで置き換える
   const answer = getRandomItem(question.answers);
