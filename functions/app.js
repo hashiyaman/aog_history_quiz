@@ -32,7 +32,7 @@ const quizAnswer = (conv, params) => {
     reply += '<break time="1000ms"/></speak>';
     conv.ask(reply);
 
-    doQuiz(conv);
+    quiz(conv);
 }
 
 const quiz = conv => {
