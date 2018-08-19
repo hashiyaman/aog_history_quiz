@@ -69,7 +69,7 @@ function getEvaluationMessage(correctRatio) {
     return evaluationMessage;
 }
 
-const quizDo = conv => conv.ask(sprinft(MESSAGE_QUESTION, quizNumber, quizData.question));
+const quizDo = conv => conv.ask(sprintf(MESSAGE_QUESTION, quizNumber, quizData.question));
 
 const quizContinue = conv => conv.ask('もう一度、やりますか？');
 
