@@ -10,8 +10,10 @@ const MESSAGE_QUESTION = '<speak>第%d問 <break time="100ms" />'
     + 'まるまる <break time="500ms" /> にあてはまる言葉を答えてください。<break time="500ms" />'
     + '%s</speak>';
 const MESSAGE_RESULT = '<speak> これでクイズは終わりです。<break time="100ms" />'
-    + 'あなたの正解率は<break time="500ms" />%.3fパーセントです。<break time="500ms" />'
-    + '%s もう一度やりますか？</speak> ';
+    + 'あなたの正解率は<break time="500ms" />%fパーセントです。<break time="500ms" />'
+    + '%s</speak> ';
+
+const CONTEXT_QUIZ_ANSWER_FOLLOWUP = "QuizAnswer-followup-2";
 
 let quizData = {};
 let quizNumber = 0;
@@ -49,6 +51,8 @@ const quiz = conv => {
         const correctRatio = (numberOfCorrectAnswer / NUMBER_OF_QUIZZES) * 100;
         const evaluationMessage = getEvaluationMessage(correctRatio);
         conv.ask(sprintf(MESSAGE_RESULT, correctRatio, evaluationMessage));
+
+        conv.contexts.set(CONTEXT_QUIZ_ANSWER_FOLLOWUP, 1);
     }
 }
 
