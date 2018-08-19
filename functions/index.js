@@ -71,6 +71,7 @@ function quizAnswer(conv, params, input) {
   }
 
   conv.ask(reply);
+  quiz(conv, params, input);
 }
 
 // コンテキストに保存されたクイズデータを取得
