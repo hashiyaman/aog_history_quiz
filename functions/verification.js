@@ -8,7 +8,7 @@ const FILE_PASSWD = path.join(__dirname, 'passwd');
 const getVerificationSync = () => {
     let data;
     try {
-        fs.readFileSync(FILE_PASSWD, 'utf-8');
+        data = fs.readFileSync(FILE_PASSWD, 'utf-8');
         return {
             verification: {
                 Authorization: 'Bearer ' + data,
