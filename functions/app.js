@@ -29,7 +29,7 @@ const quizAnswer = (conv, params) => {
     } else {
         reply += '違います。正解は「' + correctAnswer + '」でした。';
     }
-
+    reply += '</speak><break time="1000ms"/>';
     conv.ask(reply);
 
     doQuiz(conv);
@@ -78,7 +78,9 @@ function getQuizNumber(conv) {
     let quizNumber = 0;
     if (context) {
         quizNumber = context.number;
+        console.log("QuizNumber - context: " + context.number);
     }
+    console.log("QuizNumber: " + quizNumber);
     conv.contexts.set(CONTEXT_QUIZ_NUMBER, 10, { number: ++quizNumber, });
 
     return quizNumber ? quizNumber : 1;
