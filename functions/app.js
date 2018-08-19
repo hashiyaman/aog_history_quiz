@@ -3,7 +3,7 @@
 const verification = require('./verification').getVerificationSync();
 const app = require('actions-on-google').dialogflow(verification);
 
-const sprinft = require('sprintf-js').sprinft;
+const sprintf = require('sprintf-js').sprintf;
 
 const NUMBER_OF_QUIZZES = 3;
 const MESSAGE_QUESTION = '<speak> 第%d問<break time="100ms" />まるまる <break time="500ms" /> にあてはまる言葉を答えてください。<break time="500ms" />%s</speak>';
