@@ -23,7 +23,7 @@ fs.readFile(FILE_PASSWD, function (err, data) {
 const app = dialogflow(verification);
 
 const CONTEXT_QUIZ = 'quiz';
-const CONTEXT_CURRENT_QUIZ_NUMBER  = 'current_quiz_number';
+const CONTEXT_QUIZ_NUMBER  = 'quiz_number';
 
 // Intentの設定
 app.intent('Default Welcome Intent', quiz);
@@ -43,27 +43,12 @@ function quiz(conv, params, input) {
   // コンテキストにデータを保存
   conv.contexts.set(CONTEXT_QUIZ, 1, { quiz: quiz, });
   
-  let currentQuizNumber = getCurrentQuizNumber(conv);
-  conv.ask('<speak>第' + currentQuizNumber + '問<break time="100ms"/>');
+  let quizNumber = getQuizNumber(conv);
+  conv.ask('<speak>第' + quizNumber + '問<break time="100ms"/>');
 
   conv.ask('<speak>まるまる<break time="500ms"/>にあてはまる言葉を答えてください。' +
     '<break time="500ms"/>' +
     quiz.question + '</speak>');
-}
-
-function getCurrentQuizNumber(conv) {
-  let context = conv.contexts.get(CONTEXT_CURRENT_QUIZ_NUMBER);
-  let currentQuizNumber = 0;
-  if (context) {
-    currentQuizNumber = context.number;
-  }
-  currentQuizNumber++;
-
-  conv.contexts.set(CONTEXT_CURRENT_QUIZ_NUMBER, 10, {
-    number: currentQuizNumber,
-  });
-
-  return currentQuizNumber;
 }
 
 function quizAnswer(conv, params, input) {
@@ -92,6 +77,17 @@ function quizAnswer(conv, params, input) {
 function getQuizFromContext(conv) {
   const context = conv.contexts.get(CONTEXT_QUIZ);
   return context ? context.parameters.quiz : null;
+}
+
+function getQuizNumber(conv) {
+  let context = conv.contexts.get(CONTEXT_QUIZ_NUMBER);
+  let quizNumber = 0;
+  if (context) {
+    quizNumber = context.number;
+  }
+  conv.contexts.set(CONTEXT_QUIZ_NUMBER, 10, {number: ++quizNumber, });
+
+  return quizNumber ? quizNumber : 1;
 }
 
 // 問題文を繰り返す
