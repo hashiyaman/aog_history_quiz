@@ -10,7 +10,7 @@ const MESSAGE_QUESTION = '<speak>第%d問 <break time="100ms" />'
     + 'まるまる <break time="500ms" /> にあてはまる言葉を答えてください。<break time="500ms" />'
     + '%s</speak>';
 const MESSAGE_RESULT = '<speak> これでクイズは終わりです。<break time="100ms" />'
-    + 'あなたの正解率は<break time="500ms" />%fパーセントです。<break time="500ms" />'
+    + 'あなたの正解率は<break time="500ms" />%.2fパーセントです。<break time="500ms" />'
     + '%s</speak> ';
 
 const CONTEXT_QUIZ_ANSWER_FOLLOWUP = "QuizAnswer-followup-2";
