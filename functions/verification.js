@@ -11,7 +11,7 @@ const getVerificationSync = () => {
         fs.readFileSync(FILE_PASSWD, 'utf-8');
         return {
             verification: {
-                Authorization: 'Bearer ' + data
+                Authorization: 'Bearer ' + undefined,
             }
         };
     } catch (err) {
@@ -28,7 +28,7 @@ const getVerification = () => {
 
             const verification = {
                 verification: {
-                    Authorization: 'Bearer ' + data
+                    Authorization: 'Bearer ' + data,
                 }
             };
             resolve(verification);
