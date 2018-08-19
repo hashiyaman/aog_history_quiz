@@ -33,22 +33,12 @@ app.intent('QuizAnswer', quizAnswer);
 app.intent('Quiz - repeat', quizRepeat);
 app.intent('Quiz - noinput', quizRepeat);
 app.intent('QuizAnswer - noinput', conv => {
-  conv.ask('もう一回、やりませんか？');
+  conv.ask('続けますか？');
 });
 
 // クイズを出題する
 function quiz(conv, params, input) {
-  const quiz = require('./history-quiz').create();
-
-  // コンテキストにデータを保存
-  conv.contexts.set(CONTEXT_QUIZ, 1, { quiz: quiz, });
-  
-  let quizNumber = getQuizNumber(conv);
-  conv.ask('<speak>第' + quizNumber + '問<break time="100ms"/>');
-
-  conv.ask('<speak>まるまる<break time="500ms"/>にあてはまる言葉を答えてください。' +
-    '<break time="500ms"/>' +
-    quiz.question + '</speak>');
+  doQuiz(conv);
 }
 
 function quizAnswer(conv, params, input) {
@@ -71,7 +61,22 @@ function quizAnswer(conv, params, input) {
   }
 
   conv.ask(reply);
-  quiz(conv, params, input);
+  
+  doQuiz(conv);
+}
+
+function doQuiz(conv) {
+  const quiz = require('./history-quiz').create();
+
+  // コンテキストにデータを保存
+  conv.contexts.set(CONTEXT_QUIZ, 1, { quiz: quiz, });
+  
+  let quizNumber = getQuizNumber(conv);
+  conv.ask('<speak>第' + quizNumber + '問<break time="100ms"/>');
+
+  conv.ask('<speak>まるまる<break time="500ms"/>にあてはまる言葉を答えてください。' +
+    '<break time="500ms"/>' +
+    quiz.question + '</speak>');
 }
 
 // コンテキストに保存されたクイズデータを取得
