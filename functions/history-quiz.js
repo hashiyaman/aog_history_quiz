@@ -7,7 +7,7 @@ const path = require('path');
 const FILE_QUESTIONS = path.join(__dirname, 'questions.csv');
 const PLACEHOLDER = '<break time="300ms"/>まるまる<break time="300ms"/>'
 
-const loadedQuestions = [];
+let loadedQuestions = [];
 
 function readFile(path) {
   console.log(path + "をロードします。");
