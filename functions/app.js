@@ -44,7 +44,7 @@ const quiz = conv => {
     } else {
         const correctRatio = (numberOfCorrectAnswer / NUMBER_OF_QUIZZES);
         const evaluationMessage = getEvaluationMessage(correctRatio);
-        conv.ask(MESSAGE_RESULT, correctRatio, evaluationMessage);
+        conv.ask(sprintf(MESSAGE_RESULT, correctRatio, evaluationMessage));
 
         quizContinue(conv);
     }
