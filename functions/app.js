@@ -6,6 +6,7 @@ const app = require('actions-on-google').dialogflow(verification);
 const CONTEXT_QUIZ = 'quiz';
 const CONTEXT_QUIZ_NUMBER = 'quiz_number';
 
+let quizData = {};
 let quizNum = 0;
 
 // クイズを出題する
@@ -17,14 +18,12 @@ const quizAnswer = (conv, params) => {
     // ItemNameパラメータを受け取る
     const itemName = params.ItemName;
 
-    const quiz = getQuizFromContext(conv);
-    if (!quiz) {
-        // クイズデータがない
+    if (!quizData) {
         conv.close('クイズを始めるには「クイズ」と言ってください。');
         return;
     }
 
-    const correctAnswer = quiz.answer;
+    const correctAnswer = quizData.answer;
     let reply = '<speak>';
     if (correctAnswer === itemName) {
         reply += '<emphasis level="strong">正解です！</emphasis>';
@@ -38,10 +37,8 @@ const quizAnswer = (conv, params) => {
 }
 
 const quizRepeat = conv => {
-    const quiz = getQuizFromContext(conv);
-
     conv.ask('<speak>まるまる<break time="500ms"/>にあてはまる言葉を答えてください。<break time="500ms"/>'
-        + quiz.question
+        + quizData.question
         + '</speak>');
 }
 
@@ -57,36 +54,36 @@ app.intent('Quiz - noinput', quizRepeat);
 app.intent('QuizAnswer - noinput', quizContinue);
 
 function doQuiz(conv) {
-    const quiz = require('./history-quiz').create();
+    quizData = require('./history-quiz').create();
     quizNum++;
 
     // コンテキストにデータを保存
-    conv.contexts.set(CONTEXT_QUIZ, 1, { quiz: quiz, });
+    // conv.contexts.set(CONTEXT_QUIZ, 1, { quiz: quiz, });
+    // let quizNumber = getQuizNumber(conv);
 
-    let quizNumber = getQuizNumber(conv);
     conv.ask('<speak>第' + quizNum + '問<break time="100ms" />'
         + 'まるまる <break time="500ms" /> にあてはまる言葉を答えてください。<break time="500ms" />'
-        + quiz.question
+        + quizData.question
         + '</speak>');
 }
 
-// コンテキストに保存されたクイズデータを取得
-function getQuizFromContext(conv) {
-    const context = conv.contexts.get(CONTEXT_QUIZ);
-    return context ? context.parameters.quiz : null;
-}
+// // コンテキストに保存されたクイズデータを取得
+// function getQuizFromContext(conv) {
+//     const context = conv.contexts.get(CONTEXT_QUIZ);
+//     return context ? context.parameters.quiz : null;
+// }
 
-function getQuizNumber(conv) {
-    let context = conv.contexts.get(CONTEXT_QUIZ_NUMBER);
-    let quizNumber = 0;
-    if (context) {
-        quizNumber = context.number;
-        console.log("QuizNumber - context: " + context.number);
-    }
-    console.log("QuizNumber: " + quizNumber);
-    conv.contexts.set(CONTEXT_QUIZ_NUMBER, 10, { number: ++quizNumber, });
+// function getQuizNumber(conv) {
+//     let context = conv.contexts.get(CONTEXT_QUIZ_NUMBER);
+//     let quizNumber = 0;
+//     if (context) {
+//         quizNumber = context.number;
+//         console.log("QuizNumber - context: " + context.number);
+//     }
+//     console.log("QuizNumber: " + quizNumber);
+//     conv.contexts.set(CONTEXT_QUIZ_NUMBER, 10, { number: ++quizNumber, });
 
-    return quizNumber ? quizNumber : 1;
-}
+//     return quizNumber ? quizNumber : 1;
+// }
 
 module.exports = app;
