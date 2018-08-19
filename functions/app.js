@@ -53,6 +53,8 @@ const quiz = conv => {
         conv.ask(sprintf(MESSAGE_RESULT, correctRatio, evaluationMessage));
 
         conv.contexts.set(CONTEXT_QUIZ_ANSWER_FOLLOWUP, 1);
+        quizNumber = 0;
+        numberOfCorrectAnswer = 0;
     }
 }
 
