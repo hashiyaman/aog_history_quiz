@@ -23,7 +23,7 @@ const quizAnswer = (conv, params) => {
     const itemName = params.ItemName;
 
     if (!quizData) {
-        conv.close('歴史クイズを始めるには「歴史クイズ」と言ってください。');
+        conv.close('クイズを始めるには「クイズ」と言ってください。');
         return;
     }
 

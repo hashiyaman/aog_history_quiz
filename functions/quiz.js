@@ -4,14 +4,13 @@ const csvSync = require('csv-parse/lib/sync');
 const fs = require('fs');
 const path = require('path');
 
-const FILE_QUESTIONS = path.join(__dirname, 'questions.csv');
+const FILE_NAME = "politics.csv";
+const FILE_QUESTIONS = path.join(__dirname, FILE_NAME);
 const PLACEHOLDER = '<break time="300ms"/>まるまる<break time="300ms"/>'
 
 let loadedQuestions = [];
 
 function readFile(path) {
-  console.log(path + "をロードします。");
-
   let questions = [];
   let csvOption = {
     quote: '"',
@@ -21,7 +20,7 @@ function readFile(path) {
     relax_column_count: true,
   };
 
-  // CSVを読み込み、問題と回答に分ける
+  // Separate CSV into questions & answers
   let data = csvSync(fs.readFileSync(path, "utf8"), csvOption);
   data.forEach(element => {
     let question = {
@@ -44,10 +43,10 @@ const create = () => {
     loadedQuestions = readFile(FILE_QUESTIONS);
   }
 
-  // ランダムに問題・回答を選出する
+  // Pick questions at random
   let question = getRandomItem(loadedQuestions);
 
-  // 問題文の回答部分をプレースホルダで置き換える
+  // Replace the answer with placeholder
   const answer = getRandomItem(question.answers);
   const replacedSentence = question.sentence.replace(answer, PLACEHOLDER);
 
