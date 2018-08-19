@@ -1,23 +1,18 @@
 'use strict';
 
+const verification = require('./verification').getVerificationSync();
+const app = require('actions-on-google').dialogflow(verification);
 
-require('./verification').getVerification()
-    .then((verification) => {
-        const app = require('actions-on-google').dialogflow(verification);
-
-        // Intentの設定
-        app.intent('Default Welcome Intent', quiz);
-        app.intent('Quiz', quiz);
-        //app.intent('QuizAnswer - yes', quiz);
-        app.intent('QuizAnswer', quizAnswer);
-        app.intent('Quiz - repeat', quizRepeat);
-        app.intent('Quiz - noinput', quizRepeat);
-        app.intent('QuizAnswer - noinput', conv => {
-            conv.ask('続けますか？');
-        });
-
-        module.exports = app;
-    });
+// Intentの設定
+app.intent('Default Welcome Intent', quiz);
+app.intent('Quiz', quiz);
+//app.intent('QuizAnswer - yes', quiz);
+app.intent('QuizAnswer', quizAnswer);
+app.intent('Quiz - repeat', quizRepeat);
+app.intent('Quiz - noinput', quizRepeat);
+app.intent('QuizAnswer - noinput', conv => {
+    conv.ask('続けますか？');
+});
 
 const CONTEXT_QUIZ = 'quiz';
 const CONTEXT_QUIZ_NUMBER = 'quiz_number';
@@ -90,3 +85,5 @@ function quizRepeat(conv, params, input) {
         '<break time="500ms"/>' +
         quiz.question + '</speak>');
 }
+
+module.exports = app;
