@@ -6,7 +6,7 @@ const app = require('actions-on-google').dialogflow(verification);
 const sprintf = require('sprintf-js').sprintf;
 
 const NUMBER_OF_QUIZZES = 10;
-const MESSAGE_QUESTION = '<speak>第%d問 <break time="100ms" />%s</speak>';
+const MESSAGE_QUESTION = '<speak>第%d問 <break time="500ms" />%s</speak>';
 const MESSAGE_RESULT = '<speak> これでクイズは終わりです。<break time="100ms" />'
     + 'あなたの正解率は<break time="500ms" />%.2fパーセントです。<break time="500ms" />'
     + '%s</speak> ';
