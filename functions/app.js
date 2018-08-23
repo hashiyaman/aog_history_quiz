@@ -5,10 +5,8 @@ const app = require('actions-on-google').dialogflow(verification);
 
 const sprintf = require('sprintf-js').sprintf;
 
-const NUMBER_OF_QUIZZES = 5;
-const MESSAGE_QUESTION = '<speak>第%d問 <break time="100ms" />'
-    + 'まるまる <break time="500ms" /> にあてはまる言葉を答えてください。<break time="500ms" />'
-    + '%s</speak>';
+const NUMBER_OF_QUIZZES = 10;
+const MESSAGE_QUESTION = '<speak>第%d問 <break time="100ms" />%s</speak>';
 const MESSAGE_RESULT = '<speak> これでクイズは終わりです。<break time="100ms" />'
     + 'あなたの正解率は<break time="500ms" />%.2fパーセントです。<break time="500ms" />'
     + '%s</speak> ';
@@ -16,7 +14,7 @@ const MESSAGE_RESULT = '<speak> これでクイズは終わりです。<break ti
 const CONTEXT_QUIZ_ANSWER_FOLLOWUP = "QuizAnswer-followup-2";
 
 let quizData = {};
-let quizNumber = 0;
+let quizNumber = 1;
 let numberOfCorrectAnswer = 0;
 
 const quizAnswer = (conv, params) => {
@@ -43,7 +41,6 @@ const quizAnswer = (conv, params) => {
 
 const quiz = conv => {
     quizData = require('./quiz').create();
-    quizNumber++;
 
     if (quizNumber <= NUMBER_OF_QUIZZES) {
         quizDo(conv);
@@ -53,9 +50,11 @@ const quiz = conv => {
         conv.ask(sprintf(MESSAGE_RESULT, correctRatio, evaluationMessage));
 
         conv.contexts.set(CONTEXT_QUIZ_ANSWER_FOLLOWUP, 1);
-        quizNumber = 0;
+        quizNumber = 1;
         numberOfCorrectAnswer = 0;
     }
+
+    quizNumber++;
 }
 
 function getEvaluationMessage(correctRatio) {
