@@ -6,7 +6,7 @@ const path = require('path');
 
 const FILE_NAME = "politics.csv";
 const FILE_QUESTIONS = path.join(__dirname, FILE_NAME);
-const PLACEHOLDER = '<break time="300ms"/>まるまる<break time="300ms"/>'
+const PLACEHOLDER = '<break time="100ms"/>まるまる<break time="300ms"/>'
 
 let loadedQuestions = [];
 
