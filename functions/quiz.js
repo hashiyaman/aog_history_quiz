@@ -47,8 +47,8 @@ const create = () => {
   let question = getRandomItem(loadedQuestions);
 
   // Replace the answer with placeholder
-  const answer = '/' + getRandomItem(question.answers) + '/gi';
-  const replacedSentence = question.sentence.replace(answer, PLACEHOLDER);
+  const answer = getRandomItem(question.answers);
+  const replacedSentence = question.sentence.replace(answer, PLACEHOLDER, "gi");
 
   return {
     question: replacedSentence,
