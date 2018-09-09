@@ -45,7 +45,7 @@ const quiz = conv => {
     if (quizNumber <= NUMBER_OF_QUIZZES) {
         quizDo(conv);
     } else {
-        const correctRatio = (numberOfCorrectAnswer / NUMBER_OF_QUIZZES) * 100;
+        const correctRatio = Math.round((numberOfCorrectAnswer / NUMBER_OF_QUIZZES) * 100);
         const evaluationMessage = getEvaluationMessage(correctRatio);
         conv.ask(sprintf(MESSAGE_RESULT, correctRatio, evaluationMessage));
 
@@ -70,7 +70,7 @@ function getEvaluationMessage(correctRatio) {
     } else if (80 <= correctRatio && correctRatio < 100) {
         evaluationMessage += "惜しい、あとちょっとで満点ですね！";
     } else if (correctRatio == 100) {
-        evaluationMessage += "すごい、歴史マスターですね！";
+        evaluationMessage += "すごい、社会マスターですね！";
     }
     evaluationMessage += "</speak>"
     return evaluationMessage;
