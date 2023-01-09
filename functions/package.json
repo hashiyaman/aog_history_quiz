@@ -12,8 +12,8 @@
     "actions-on-google": "^2.3.0",
     "csv": "^3.1.0",
     "csv-parse": "^2.5.0",
-    "firebase-admin": "~5.13.0",
-    "firebase-functions": "^2.0.0",
+    "firebase-admin": "~11.4.1",
+    "firebase-functions": "^4.1.1",
     "sprintf-js": "^1.1.1"
   },
   "private": true
